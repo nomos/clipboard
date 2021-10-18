@@ -38,6 +38,8 @@ func read(t Format) (buf []byte, err error) {
 		n = C.clipboard_read_string(&data)
 	case FmtImage:
 		n = C.clipboard_read_image(&data)
+	case FmtBMP:
+		n = C.clipboard_read_bmp(&data)
 	}
 	if data == nil {
 		return nil, errUnavailable

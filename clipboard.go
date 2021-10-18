@@ -74,6 +74,8 @@ const (
 	FmtText Format = iota
 	// FmtImage indicates image/png clipboard format
 	FmtImage
+	// FmtImage indicates image/bmp clipboard format
+	FmtBMP
 )
 
 // Due to the limitation on operating systems (such as darwin),

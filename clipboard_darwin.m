@@ -25,6 +25,18 @@ unsigned int clipboard_read_string(void **out) {
 	return siz;
 }
 
+unsigned int clipboard_read_bmp(void **out) {
+	NSPasteboard * pasteboard = [NSPasteboard generalPasteboard];
+	NSData *data = [pasteboard dataForType:NSPasteboardTypeTIFF];
+	if (data == nil) {
+		return 0;
+	}
+	NSUInteger siz = [data length];
+	*out = malloc(siz);
+	[data getBytes: *out length: siz];
+	return siz;
+}
+
 unsigned int clipboard_read_image(void **out) {
 	NSPasteboard * pasteboard = [NSPasteboard generalPasteboard];
 	NSData *data = [pasteboard dataForType:NSPasteboardTypePNG];

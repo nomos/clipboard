@@ -102,8 +102,8 @@ func writeText(buf []byte) error {
 // readImage reads the clipboard and returns PNG encoded image data
 // if presents. The caller is responsible for opening/closing the
 // clipboard before calling this function.
-func readImage() ([]byte, error) {
-	hMem, _, err := getClipboardData.Call(cFmtDIBV5)
+func readImage(fmt int) ([]byte, error) {
+	hMem, _, err := getClipboardData.Call(fmt)
 	if hMem == 0 {
 		return nil, err
 	}
@@ -148,7 +148,11 @@ func readImage() ([]byte, error) {
 	}
 	// always use PNG encoding.
 	var buf bytes.Buffer
-	png.Encode(&buf, img)
+	if fmt==cFmtDIBV5 {
+		png.Encode(&buf, img)
+	} else if fmt == cFmtBitmap {
+		bmp.Encode(&buf, img)
+	}
 	return buf.Bytes(), nil
 }
 
@@ -260,6 +264,8 @@ func read(t Format) (buf []byte, err error) {
 	switch t {
 	case FmtImage:
 		format = cFmtDIBV5
+	case FmtBMP:
+		format = cFmtBitmap
 	case FmtText:
 		fallthrough
 	default:
@@ -284,7 +290,9 @@ func read(t Format) (buf []byte, err error) {
 
 	switch format {
 	case cFmtDIBV5:
-		return readImage()
+		return readImage(cFmtDIBV5)
+	case cFmtBitmap:
+		return readImage(cFmtBitmapt)
 	case cFmtUnicodeText:
 		fallthrough
 	default:
