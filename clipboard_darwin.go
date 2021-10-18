@@ -17,6 +17,7 @@ package clipboard
 
 unsigned int clipboard_read_string(void **out);
 unsigned int clipboard_read_image(void **out);
+unsigned int clipboard_read_bmp(void **out);
 int clipboard_write_string(const void *bytes, NSInteger n);
 int clipboard_write_image(const void *bytes, NSInteger n);
 NSInteger clipboard_change_count();
