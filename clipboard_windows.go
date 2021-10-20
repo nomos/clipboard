@@ -16,6 +16,7 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"golang.org/x/image/bmp"
 	"image"
 	"image/color"
 	"image/png"
@@ -102,7 +103,7 @@ func writeText(buf []byte) error {
 // readImage reads the clipboard and returns PNG encoded image data
 // if presents. The caller is responsible for opening/closing the
 // clipboard before calling this function.
-func readImage(fmt int) ([]byte, error) {
+func readImage(fmt uintptr) ([]byte, error) {
 	hMem, _, err := getClipboardData.Call(fmt)
 	if hMem == 0 {
 		return nil, err
@@ -292,7 +293,7 @@ func read(t Format) (buf []byte, err error) {
 	case cFmtDIBV5:
 		return readImage(cFmtDIBV5)
 	case cFmtBitmap:
-		return readImage(cFmtBitmapt)
+		return readImage(cFmtBitmap)
 	case cFmtUnicodeText:
 		fallthrough
 	default:
